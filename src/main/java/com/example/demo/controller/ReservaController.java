@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ReservaCrearDTO;
 import com.example.demo.dto.ReservaDTO;
 import com.example.demo.mapper.util.ReflectionMapper;
 import com.example.demo.model.Reserva;
@@ -55,13 +56,13 @@ public class ReservaController {
     //}
 
     @PostMapping
-    public Optional<ReservaDTO> createReserva(@RequestBody ReservaDTO reserva) {
-        return reservaService.save(reserva);
+    public Optional<ReservaDTO> createReserva(@RequestBody ReservaCrearDTO reservaCrearDTO) {
+        return reservaService.save(reservaCrearDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ReservaDTO> updateReserva(@PathVariable Long id, @RequestBody ReservaDTO reservaDetails) {
-        Optional<ReservaDTO> reserva = reservaService.findById(id);
+        /*Optional<ReservaDTO> reserva = reservaService.findById(id);
         if (reserva.isPresent()) {
             ReservaDTO updatedReserva = reserva.get();
             ReflectionMapper.actualizarCamposNoNulos(reservaDetails, updatedReserva);
@@ -69,7 +70,8 @@ public class ReservaController {
             return ResponseEntity.ok(reservaService.save(updatedReserva).get());
         } else {
             return ResponseEntity.notFound().build();
-        }
+        }*/
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

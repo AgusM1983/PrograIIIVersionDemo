@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.EmpleadoCrearDTO;
 import com.example.demo.dto.EmpleadoDTO;
-import com.example.demo.mapper.util.ReflectionMapper;
-import com.example.demo.model.Empleado;
+import com.example.demo.mapper.noIdenticos.EmpleadoCrearMapper;
 import com.example.demo.service.EmpleadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ import java.util.Optional;
 public class EmpleadoController {
     @Autowired
     private EmpleadoService empleadoService;
+    @Autowired
+    private EmpleadoCrearMapper empleadoCrearMapper;
 
     @GetMapping
     public List<EmpleadoDTO> getAllEmpleados() {
@@ -31,20 +33,22 @@ public class EmpleadoController {
     }
 
     @PostMapping
-    public EmpleadoDTO createEmpleado(@RequestBody EmpleadoDTO empleado) {
+    public EmpleadoDTO createEmpleado(@RequestBody EmpleadoCrearDTO empleado) {
         return empleadoService.save(empleado).get();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpleadoDTO> updateEmpleado(@PathVariable Long id, @RequestBody EmpleadoDTO empleadoDetails) {
-        Optional<EmpleadoDTO> empleado = empleadoService.findById(id);
+/*        Optional<EmpleadoDTO> empleado = empleadoService.findById(id);
         if (empleado.isPresent()) {
             EmpleadoDTO updatedEmpleado = empleado.get();
             ReflectionMapper.actualizarCamposNoNulos(empleadoDetails,updatedEmpleado);// Actualizar campos aquí
+
             return ResponseEntity.ok(empleadoService.save(updatedEmpleado).get());
         } else {
             return ResponseEntity.notFound().build();
-        }
+        }*/
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

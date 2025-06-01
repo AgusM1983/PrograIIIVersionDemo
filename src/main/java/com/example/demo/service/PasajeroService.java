@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.PasajeroCrearDTO;
 import com.example.demo.dto.PasajeroDTO;
 import com.example.demo.mapper.PasajeroMapper;
+import com.example.demo.mapper.noIdenticos.PasajeroCrearMapper;
 import com.example.demo.mapper.util.ReflectionMapper;
+import com.example.demo.model.Empleado;
 import com.example.demo.model.Pasajero;
 import com.example.demo.repository.PasajeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +19,15 @@ import java.util.stream.Collectors;
 public class PasajeroService {
     private final PasajeroRepository pasajeroRepository;
     private final PasajeroMapper pasajeroMapper;
+    private final PasajeroCrearMapper pasajeroCrearMapper;
 
     @Autowired
-    public PasajeroService(PasajeroRepository pasajeroRepository, PasajeroMapper pasajeroMapper) {
+    public PasajeroService(PasajeroRepository pasajeroRepository,
+                           PasajeroMapper pasajeroMapper,
+                           PasajeroCrearMapper pasajeroCrearMapper) {
         this.pasajeroRepository = pasajeroRepository;
         this.pasajeroMapper = pasajeroMapper;
+        this.pasajeroCrearMapper = pasajeroCrearMapper;
     }
 
     public List<PasajeroDTO> findAll() {
@@ -34,9 +41,9 @@ public class PasajeroService {
         return Optional.ofNullable(pasajeroDTO);
     }
 
-    public Optional<PasajeroDTO> save(PasajeroDTO pasajeroDTO) {
-        Pasajero pasajero = pasajeroMapper.toEntity(pasajeroDTO);
-        pasajeroDTO = pasajeroMapper.toDto(pasajeroRepository.save(pasajero));
+    public Optional<PasajeroDTO> save(PasajeroCrearDTO pasajeroCrearDTO) {
+        Pasajero pasajero = pasajeroCrearMapper.toEntity(pasajeroCrearDTO);
+        PasajeroDTO pasajeroDTO = pasajeroMapper.toDto(pasajeroRepository.save(pasajero));
         return Optional.ofNullable(pasajeroDTO);
     }
 

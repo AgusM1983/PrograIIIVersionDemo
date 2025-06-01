@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ReservaCrearDTO;
 import com.example.demo.dto.ReservaDTO;
 import com.example.demo.mapper.ReservaMapper;
+import com.example.demo.mapper.noIdenticos.ReservaCrearMapper;
 import com.example.demo.model.*;
 import com.example.demo.model.enums.EstadoReserva;
 import com.example.demo.repository.EmpleadoRepository;
@@ -19,10 +21,13 @@ import java.util.Optional;
 public class ReservaService {
     private final ReservaRepository reservaRepository;
     private final ReservaMapper reservaMapper;
+    private final ReservaCrearMapper reservaCrearMapper;
+
     @Autowired
-    public ReservaService(ReservaRepository reservaRepository, ReservaMapper reservaMapper) {
+    public ReservaService(ReservaRepository reservaRepository, ReservaMapper reservaMapper, ReservaCrearMapper reservaCrearMapper) {
         this.reservaRepository = reservaRepository;
         this.reservaMapper = reservaMapper;
+        this.reservaCrearMapper = reservaCrearMapper;
     }
 
 
@@ -40,8 +45,8 @@ public class ReservaService {
         return Optional.ofNullable(reservaDTO);
     }
 
-    public Optional <ReservaDTO> save(ReservaDTO reservaDTO) {
-        Reserva reserva = reservaMapper.toEntity(reservaDTO);
+    public Optional <ReservaDTO> save(ReservaCrearDTO reservaCrearDTO) {
+        Reserva reserva = reservaCrearMapper.toEntity(reservaCrearDTO);
         return Optional.ofNullable(
                 reservaMapper.toDto(reservaRepository.save(reserva))
         );
