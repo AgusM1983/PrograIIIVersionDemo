@@ -1,20 +1,16 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.crear.HabitacionCrearDTO;
 import com.example.demo.dto.HabitacionDTO;
 import com.example.demo.mapper.HabitacionMapper;
-import com.example.demo.model.CostoHabitacion;
-import com.example.demo.model.Habitacion;
-import com.example.demo.model.Costo_Servicio;
-import com.example.demo.model.Reserva;
-import com.example.demo.model.enums.ServicioEnum;
-import com.example.demo.model.enums.TipoHabitacion;
+import com.example.demo.mapper.noIdenticos.HabitacionCrearMapper;
+import com.example.demo.mapper.util.ReflectionMapper;
+import com.example.demo.model.*;
 import com.example.demo.repository.HabitacionRepository;
-import com.example.demo.repository.Costo_ServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,29 +18,32 @@ public class HabitacionService {
 
     private final HabitacionRepository habitacionRepository;
     private final HabitacionMapper habitacionMapper;
+    private final HabitacionCrearMapper habitacionCrearMapper;
     //    private final Costo_ServicioRepository costoServicioRepository;
 //    private final CostoHabitacionService costoHabitacionService;
 
     @Autowired
-    public HabitacionService(HabitacionRepository habitacionRepository,
-                             HabitacionMapper habitacionMapper) {
+    public HabitacionService(HabitacionRepository habitacionRepository, HabitacionMapper habitacionMapper, HabitacionCrearMapper habitacionCrearMapper) {
         this.habitacionRepository = habitacionRepository;
         this.habitacionMapper = habitacionMapper;
+        this.habitacionCrearMapper = habitacionCrearMapper;
     }
 
     // Métodos básicos de CRUD
-    public List<Habitacion> findAll() {
-        return habitacionRepository.findAll();
+    public List<HabitacionDTO> findAll() {
+        return habitacionRepository.findAll()
+                .stream().map(p->habitacionMapper.toDto(p)).toList();
     }
 
-    public Optional<Habitacion> findById(Long id) {
-        return habitacionRepository.findById(id);
+    public Optional<HabitacionDTO> findById(Long id) {
+        HabitacionDTO respuesta = habitacionMapper.toDto(habitacionRepository.findById(id).get());
+        return Optional.ofNullable(respuesta);
     }
 
-    public HabitacionDTO save(HabitacionDTO habitacionDTO) {
-        Habitacion habitacion = habitacionMapper.toEntity(habitacionDTO);
+    public Optional<HabitacionDTO> save(HabitacionCrearDTO habitacionDTO) {
+        Habitacion habitacion = habitacionCrearMapper.toEntity(habitacionDTO);
         HabitacionDTO respuesta = habitacionMapper.toDto(habitacionRepository.save(habitacion));
-        return respuesta;
+        return Optional.ofNullable(respuesta);
     }
 
     public void deleteById(Long id) {
@@ -52,16 +51,35 @@ public class HabitacionService {
     }
 
     // Métodos de búsqueda específicos
-    public List<Habitacion> findByEstado(String estado) {
-        return habitacionRepository.findByEstado(estado);
+    public List<HabitacionDTO> findByEstado(String estado) {
+        return habitacionRepository.findByEstado(estado)
+                .stream().map(p->habitacionMapper.toDto(p)).toList();
     }
 
-    public List<Habitacion> findByTipoHabitacion(String tipo) {
-        return habitacionRepository.findByTipoHabitacion(tipo);
+    public List<HabitacionDTO> findByTipoHabitacion(String tipo) {
+        return habitacionRepository.findByTipoHabitacion(tipo)
+                .stream().map(p->habitacionMapper.toDto(p)).toList();
     }
 
-    public Optional<Habitacion> findByNumeroHabitacion(String numero) {
-        return Optional.ofNullable(habitacionRepository.findByNumeroHabitacion(numero));
+    public Optional<HabitacionDTO> findByNumeroHabitacion(String numero) {
+        HabitacionDTO respuesta =
+                habitacionMapper.toDto(habitacionRepository.findByNumeroHabitacion(numero));
+        return Optional.ofNullable(respuesta);
+    }
+
+    public Optional<HabitacionDTO> updateHabitacion(Long id, HabitacionCrearDTO dtoCrearDetails) {
+        dtoCrearDetails.setId(id); // no puede modificar el id
+        Habitacion modelCrearDetails = habitacionCrearMapper.toEntity(dtoCrearDetails); //creamos el modelo con los cambios y el resto null
+        Optional<Habitacion> model = habitacionRepository.findById(id); //buscamos el model a cambiar
+        if (model.isPresent()) {
+            Habitacion updatedModel = model.get(); // el model a cambiar
+            ReflectionMapper.actualizarCamposNoNulos(modelCrearDetails,updatedModel); // actualizamos el model
+            habitacionRepository.save(updatedModel);
+            Optional<HabitacionDTO> respuesta = Optional.ofNullable(habitacionMapper.toDto(updatedModel));
+            return respuesta;
+        } else {
+            return Optional.ofNullable(null);
+        }
     }
 
 }

@@ -1,13 +1,11 @@
 package com.example.demo.mapper.noIdenticos;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.crear.ReservaCrearDTO;
 import com.example.demo.mapper.HabitacionMapper;
 import com.example.demo.mapper.PasajeroMapper;
-import com.example.demo.mapper.UsuarioMapper;
 import com.example.demo.model.*;
-import com.example.demo.service.HabitacionService;
-import com.example.demo.service.PasajeroService;
-import com.example.demo.service.UsuarioService;
+import com.example.demo.repository.HabitacionRepository;
+import com.example.demo.repository.PasajeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,16 +14,17 @@ import java.util.Optional;
 @Component
 public class ReservaCrearMapper {
 
-    private final PasajeroService pasajeroService;
+    private final PasajeroRepository pasajeroRepository;
     private final PasajeroMapper pasajeroMapper;
-    private final HabitacionService habitacionService;
+    private final HabitacionRepository habitacionRepository;
     private final HabitacionMapper habitacionMapper;
 
     @Autowired
-    public ReservaCrearMapper(PasajeroService pasajeroService, PasajeroMapper pasajeroMapper, HabitacionService habitacionService, HabitacionMapper habitacionMapper) {
-        this.pasajeroService = pasajeroService;
+    public ReservaCrearMapper(PasajeroRepository pasajeroRepository, PasajeroMapper pasajeroMapper,
+                              HabitacionRepository habitacionRepository, HabitacionMapper habitacionMapper) {
+        this.pasajeroRepository = pasajeroRepository;
         this.pasajeroMapper = pasajeroMapper;
-        this.habitacionService = habitacionService;
+        this.habitacionRepository = habitacionRepository;
         this.habitacionMapper = habitacionMapper;
     }
 
@@ -49,12 +48,12 @@ public class ReservaCrearMapper {
         if (dto == null) {
             return null;
         }
-        Optional<PasajeroDTO> pasajeroDTO = pasajeroService.findById(dto.getPasajeroId());
-        Optional<Habitacion> habitacion = habitacionService.findById(dto.getHabitacionId());
-        if(pasajeroDTO.isEmpty() || habitacion.isEmpty()){
+        Optional<Pasajero> pasajero = pasajeroRepository.findById(dto.getPasajeroId());
+        Optional<Habitacion> habitacion = habitacionRepository.findById(dto.getHabitacionId());
+        if(pasajero.isEmpty() || habitacion.isEmpty()){
             return null;
         }
-        Pasajero pasajeroModel = pasajeroMapper.toEntity(pasajeroDTO.get());
+        Pasajero pasajeroModel = pasajero.get();
         Reserva model = new Reserva();
         model.setId(dto.getId());
         model.setEstado(dto.getEstado());

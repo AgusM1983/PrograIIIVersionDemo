@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.crear.HabitacionCrearDTO;
 import com.example.demo.dto.HabitacionDTO;
 import com.example.demo.mapper.HabitacionMapper;
-import com.example.demo.mapper.util.ReflectionMapper;
-import com.example.demo.model.Habitacion;
 import com.example.demo.service.HabitacionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/habitaciones")
@@ -29,17 +27,12 @@ public class HabitacionController {
 
     @GetMapping
     public List<HabitacionDTO> getAllHabitaciones() {
-        List <HabitacionDTO> habitaciones =
-                habitacionService.findAll().stream().
-                        map(h-> habitacionMapper.toDto(h))
-                        .toList();
-        return habitaciones;
+        return habitacionService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<HabitacionDTO> getHabitacionById(@PathVariable Long id) {
         return habitacionService.findById(id)
-                .map(habitacionMapper::toDto)       // Convertir la entidad a DTO
                 .map(ResponseEntity::ok)            // Devolver 200 OK con el DTO
                 .orElse(ResponseEntity.notFound().build()); // 404 si no existe
     }
@@ -47,7 +40,6 @@ public class HabitacionController {
     @GetMapping("/numero/{numero}")
     public ResponseEntity<HabitacionDTO> getHabitacionByNumero(@PathVariable String numero) {
         return habitacionService.findByNumeroHabitacion(numero)
-                .map(habitacionMapper::toDto)       // Convertir entidad → DTO
                 .map(ResponseEntity::ok)            // Devolver 200 OK con el DTO
                 .orElseGet(() -> ResponseEntity.notFound().build()); // 404 si no existe
     }
@@ -55,18 +47,16 @@ public class HabitacionController {
 
     @GetMapping("/estado/{estado}")
     public List<HabitacionDTO> getHabitacionesByEstado(@PathVariable String estado) {
-        return habitacionService.findByEstado(estado)
-                .stream().map(h->habitacionMapper.toDto(h)).toList();
+        return habitacionService.findByEstado(estado);
     }
 
     @GetMapping("/tipo/{tipo}")
     public List<HabitacionDTO> getHabitacionesByTipo(@PathVariable String tipo) {
-        return habitacionService.findByTipoHabitacion(tipo)
-                .stream().map(h->habitacionMapper.toDto(h)).toList();
+        return habitacionService.findByTipoHabitacion(tipo);
     }
 
     @PostMapping
-    public ResponseEntity<?> createHabitacion(@Valid @RequestBody HabitacionDTO habitacionDTO,
+    public ResponseEntity<?> createHabitacion(@Valid @RequestBody HabitacionCrearDTO habitacionDTO,
                                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errores = new HashMap<>();
@@ -75,13 +65,14 @@ public class HabitacionController {
             });
             return ResponseEntity.badRequest().body(errores);
         }
-        HabitacionDTO habitacionDTO1 = habitacionService.save(habitacionDTO);
+
+        HabitacionDTO habitacionDTO1 = habitacionService.save(habitacionDTO).get();
         return ResponseEntity.status(HttpStatus.CREATED).body(habitacionDTO1);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHabitacion(@PathVariable Long id,
-                                              @Valid @RequestBody HabitacionDTO habitacionDetailsDTO,
+                                              @Valid @RequestBody HabitacionCrearDTO habitacionDetailsDTO,
                                               BindingResult bindingResult) {
         // Validar el DTO
         if (bindingResult.hasErrors()) {
@@ -91,18 +82,8 @@ public class HabitacionController {
             });
             return ResponseEntity.badRequest().body(errores);
         }
-
-
-        Optional<Habitacion> habitacion = habitacionService.findById(id);
-        if (habitacion.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Habitacion destino = habitacion.get();
-        Habitacion origen = habitacionMapper.toEntity(habitacionDetailsDTO);
-        ReflectionMapper.actualizarCamposNoNulos(origen, destino);
-        HabitacionDTO habitacionSalvadaDTO = habitacionMapper.toDto(destino);
-        habitacionService.save(habitacionSalvadaDTO);
-        return ResponseEntity.ok(habitacionSalvadaDTO);
+       HabitacionDTO habitacionSalvadaDTO = habitacionService.updateHabitacion(id,habitacionDetailsDTO).get();
+       return ResponseEntity.ok(habitacionSalvadaDTO);
     }
 
 

@@ -1,6 +1,5 @@
-package com.example.demo.dto;
+package com.example.demo.dto.crear;
 
-import com.example.demo.model.enums.EstadoEmpleado;
 import com.example.demo.model.enums.EstadoPasajero;
 import lombok.AllArgsConstructor;
 import lombok.Data;

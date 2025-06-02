@@ -1,6 +1,5 @@
-package com.example.demo.dto;
+package com.example.demo.dto.crear;
 
-import com.example.demo.model.embeddable.Direccion;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.UsuarioCrearDTO;
+import com.example.demo.dto.crear.UsuarioCrearDTO;
 import com.example.demo.dto.UsuarioDTO;
-import com.example.demo.mapper.HabitacionMapper;
-import com.example.demo.mapper.util.ReflectionMapper;
-import com.example.demo.model.Usuario;
 import com.example.demo.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ReservaCrearDTO;
+import com.example.demo.dto.crear.ReservaCrearDTO;
 import com.example.demo.dto.ReservaDTO;
-import com.example.demo.mapper.util.ReflectionMapper;
-import com.example.demo.model.Reserva;
 import com.example.demo.model.enums.EstadoReserva;
 import com.example.demo.service.ReservaService;
 import lombok.RequiredArgsConstructor;

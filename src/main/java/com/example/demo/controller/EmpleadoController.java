@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.EmpleadoCrearDTO;
+import com.example.demo.dto.crear.EmpleadoCrearDTO;
 import com.example.demo.dto.EmpleadoDTO;
 import com.example.demo.mapper.noIdenticos.EmpleadoCrearMapper;
 import com.example.demo.service.EmpleadoService;

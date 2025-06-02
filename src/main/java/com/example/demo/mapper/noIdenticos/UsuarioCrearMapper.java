@@ -1,18 +1,9 @@
 package com.example.demo.mapper.noIdenticos;
 
-import com.example.demo.dto.PasajeroDTO;
-import com.example.demo.dto.ReservaCrearDTO;
-import com.example.demo.dto.UsuarioCrearDTO;
-import com.example.demo.model.Habitacion;
-import com.example.demo.model.Pasajero;
-import com.example.demo.model.Reserva;
+import com.example.demo.dto.crear.UsuarioCrearDTO;
 import com.example.demo.model.Usuario;
 import com.example.demo.model.embeddable.Direccion;
-import com.example.demo.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class UsuarioCrearMapper {

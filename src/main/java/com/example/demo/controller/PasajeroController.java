@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.PasajeroCrearDTO;
+import com.example.demo.dto.crear.PasajeroCrearDTO;
 import com.example.demo.dto.PasajeroDTO;
 import com.example.demo.mapper.PasajeroMapper;
 import com.example.demo.mapper.noIdenticos.PasajeroCrearMapper;
-import com.example.demo.mapper.util.ReflectionMapper;
-import com.example.demo.model.Pasajero;
 import com.example.demo.service.PasajeroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

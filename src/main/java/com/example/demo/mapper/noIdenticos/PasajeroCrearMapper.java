@@ -1,10 +1,8 @@
 package com.example.demo.mapper.noIdenticos;
 
-import com.example.demo.dto.EmpleadoCrearDTO;
-import com.example.demo.dto.PasajeroCrearDTO;
+import com.example.demo.dto.crear.PasajeroCrearDTO;
 import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.mapper.UsuarioMapper;
-import com.example.demo.model.Empleado;
 import com.example.demo.model.Pasajero;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.UsuarioService;

@@ -1,22 +1,17 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.PasajeroCrearDTO;
+import com.example.demo.dto.crear.PasajeroCrearDTO;
 import com.example.demo.dto.PasajeroDTO;
-import com.example.demo.dto.UsuarioCrearDTO;
-import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.mapper.PasajeroMapper;
 import com.example.demo.mapper.noIdenticos.PasajeroCrearMapper;
 import com.example.demo.mapper.util.ReflectionMapper;
-import com.example.demo.model.Empleado;
 import com.example.demo.model.Pasajero;
-import com.example.demo.model.Usuario;
 import com.example.demo.repository.PasajeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PasajeroService {

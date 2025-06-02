@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.crear;
 
 import com.example.demo.model.enums.EstadoEmpleado;
 import lombok.AllArgsConstructor;

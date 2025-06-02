@@ -16,7 +16,6 @@ public class HabitacionMapper {
         if (habitacion == null) {
             return null;
         }
-
         HabitacionDTO dto = new HabitacionDTO();
         dto.setId(habitacion.getId());
         dto.setNumeroHabitacion(habitacion.getNumeroHabitacion());
@@ -28,6 +27,7 @@ public class HabitacionMapper {
         if (habitacion.getServicios() != null) {
             Map<String, Boolean> serviciosMap = habitacion.getServicios().entrySet().stream()
                     .collect(Collectors.toMap(
+
                             entry -> entry.getKey().name(),
                             Map.Entry::getValue
                     ));
