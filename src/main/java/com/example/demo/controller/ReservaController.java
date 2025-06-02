@@ -61,17 +61,8 @@ public class ReservaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaDTO> updateReserva(@PathVariable Long id, @RequestBody ReservaDTO reservaDetails) {
-        /*Optional<ReservaDTO> reserva = reservaService.findById(id);
-        if (reserva.isPresent()) {
-            ReservaDTO updatedReserva = reserva.get();
-            ReflectionMapper.actualizarCamposNoNulos(reservaDetails, updatedReserva);
-            // Actualizar campos aquí
-            return ResponseEntity.ok(reservaService.save(updatedReserva).get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }*/
-        return ResponseEntity.notFound().build();
+    public ReservaDTO updateReserva(@PathVariable Long id, @RequestBody ReservaCrearDTO reservaDetails) {
+        return reservaService.updateReserva(id,reservaDetails).get();
     }
 
     @DeleteMapping("/{id}")

@@ -47,16 +47,8 @@ public class PasajeroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PasajeroDTO> updatePasajero(@PathVariable Long id, @RequestBody PasajeroDTO pasajeroDetails) {
-    /*    Optional<PasajeroDTO> pasajero = pasajeroService.findById(id);
-        if (pasajero.isPresent()) {
-            PasajeroDTO updatedPasajero = pasajero.get();
-            ReflectionMapper.actualizarCamposNoNulos(pasajeroDetails,updatedPasajero);
-            return ResponseEntity.ok(pasajeroService.save(updatedPasajero).get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }*/
-        return ResponseEntity.notFound().build();
+    public PasajeroDTO updatePasajero(@PathVariable Long id, @RequestBody PasajeroCrearDTO pasajeroDetails) {
+        return pasajeroService.updatePasajero(id,pasajeroDetails).get();
     }
 
     @DeleteMapping("/{id}")

@@ -38,17 +38,8 @@ public class EmpleadoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmpleadoDTO> updateEmpleado(@PathVariable Long id, @RequestBody EmpleadoDTO empleadoDetails) {
-/*        Optional<EmpleadoDTO> empleado = empleadoService.findById(id);
-        if (empleado.isPresent()) {
-            EmpleadoDTO updatedEmpleado = empleado.get();
-            ReflectionMapper.actualizarCamposNoNulos(empleadoDetails,updatedEmpleado);// Actualizar campos aquí
-
-            return ResponseEntity.ok(empleadoService.save(updatedEmpleado).get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }*/
-        return ResponseEntity.notFound().build();
+    public EmpleadoDTO updateEmpleado(@PathVariable Long id, @RequestBody EmpleadoCrearDTO empleadoDetails) {
+        return empleadoService.updateEmpleado(id,empleadoDetails).get();
     }
 
     @DeleteMapping("/{id}")

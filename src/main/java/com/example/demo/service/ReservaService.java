@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.EmpleadoCrearDTO;
+import com.example.demo.dto.EmpleadoDTO;
 import com.example.demo.dto.ReservaCrearDTO;
 import com.example.demo.dto.ReservaDTO;
 import com.example.demo.mapper.ReservaMapper;
 import com.example.demo.mapper.noIdenticos.ReservaCrearMapper;
+import com.example.demo.mapper.util.ReflectionMapper;
 import com.example.demo.model.*;
 import com.example.demo.model.enums.EstadoReserva;
 import com.example.demo.repository.EmpleadoRepository;
@@ -81,5 +84,20 @@ public class ReservaService {
     public List<ReservaDTO> findByEstado(EstadoReserva estado) {
         return reservaRepository.findByEstado(estado).stream()
                 .map(r->reservaMapper.toDto(r)).toList();
+    }
+
+    public Optional<ReservaDTO> updateReserva(Long id, ReservaCrearDTO dtoCrearDetails) {
+        dtoCrearDetails.setId(id); // no puede modificar el id
+        Reserva modelCrearDetails = reservaCrearMapper.toEntity(dtoCrearDetails); //creamos el modelo con los cambios y el resto null
+        Optional<Reserva> model = reservaRepository.findById(id); //buscamos el model a cambiar
+        if (model.isPresent()) {
+            Reserva updatedModel = model.get(); // el model a cambiar
+            ReflectionMapper.actualizarCamposNoNulos(modelCrearDetails,updatedModel); // actualizamos el model
+            reservaRepository.save(updatedModel);
+            Optional<ReservaDTO> respuesta = Optional.ofNullable(reservaMapper.toDto(updatedModel));
+            return respuesta;
+        } else {
+            return Optional.ofNullable(null);
+        }
     }
 }

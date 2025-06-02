@@ -2,11 +2,14 @@ package com.example.demo.service;
 
 import com.example.demo.dto.PasajeroCrearDTO;
 import com.example.demo.dto.PasajeroDTO;
+import com.example.demo.dto.UsuarioCrearDTO;
+import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.mapper.PasajeroMapper;
 import com.example.demo.mapper.noIdenticos.PasajeroCrearMapper;
 import com.example.demo.mapper.util.ReflectionMapper;
 import com.example.demo.model.Empleado;
 import com.example.demo.model.Pasajero;
+import com.example.demo.model.Usuario;
 import com.example.demo.repository.PasajeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,4 +54,20 @@ public class PasajeroService {
     public void deleteById(Long id) {
         pasajeroRepository.deleteById(id);
     }
+
+    public Optional<PasajeroDTO> updatePasajero(Long id, PasajeroCrearDTO dtoCrearDetails) {
+        dtoCrearDetails.setId(id); // no puede modificar el id
+        Pasajero modelCrearDetails = pasajeroCrearMapper.toEntity(dtoCrearDetails); //creamos el modelo con los cambios y el resto null
+        Optional<Pasajero> model = pasajeroRepository.findById(id); //buscamos el model a cambiar
+        if (model.isPresent()) {
+            Pasajero updatedModel = model.get(); // el model a cambiar
+            ReflectionMapper.actualizarCamposNoNulos(modelCrearDetails,updatedModel); // actualizamos el model
+            pasajeroRepository.save(updatedModel);
+            Optional<PasajeroDTO> respuesta = Optional.ofNullable(pasajeroMapper.toDto(updatedModel));
+            return respuesta;
+        } else {
+            return Optional.ofNullable(null);
+        }
+    }
+
 }
