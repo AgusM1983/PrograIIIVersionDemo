@@ -1,6 +1,5 @@
 package com.example.demo.dto;
 
-import com.example.demo.model.Habitacion;
 import com.example.demo.model.Reserva;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -15,10 +14,12 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HabitacionDTO {
+
     private Long id;
 
     @NotNull(message = "El numero de habitación no puede ser nulo")
     private String numeroHabitacion;
+
     @Min(value = 1, message = "La cantidad debe ser al menos 1")
     private Integer capacidad;
 
@@ -31,6 +32,5 @@ public class HabitacionDTO {
     private Map<String, Boolean> servicios;
 
     private List<Reserva> reservas;
-
 
 }

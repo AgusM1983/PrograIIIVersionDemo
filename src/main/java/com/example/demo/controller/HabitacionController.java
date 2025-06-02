@@ -66,7 +66,7 @@ public class HabitacionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createHabitacion(@Valid @RequestBody HabitacionDTO habitacion,
+    public ResponseEntity<?> createHabitacion(@Valid @RequestBody HabitacionDTO habitacionDTO,
                                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errores = new HashMap<>();
@@ -75,9 +75,8 @@ public class HabitacionController {
             });
             return ResponseEntity.badRequest().body(errores);
         }
-
-        HabitacionDTO savedHabitacion = habitacionMapper.toDto(habitacionService.save(habitacion));
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedHabitacion);
+        HabitacionDTO habitacionDTO1 = habitacionService.save(habitacionDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(habitacionDTO1);
     }
 
     @PutMapping("/{id}")

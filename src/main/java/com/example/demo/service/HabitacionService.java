@@ -41,8 +41,10 @@ public class HabitacionService {
         return habitacionRepository.findById(id);
     }
 
-    public Habitacion save(HabitacionDTO habitacion) {
-        return habitacionRepository.save(habitacionMapper.toEntity(habitacion));
+    public HabitacionDTO save(HabitacionDTO habitacionDTO) {
+        Habitacion habitacion = habitacionMapper.toEntity(habitacionDTO);
+        HabitacionDTO respuesta = habitacionMapper.toDto(habitacionRepository.save(habitacion));
+        return respuesta;
     }
 
     public void deleteById(Long id) {
